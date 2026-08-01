@@ -14,7 +14,7 @@ un cliente en Python y el entorno de base de datos levantado con **Podman**.
   "SQLTools" o "PostgreSQL" para explorar la BD, y "Python").
 
 ## Estructura del repositorio
-
+```
 biblioteca-academica/
 ├── README.md
 ├── docs/
@@ -41,7 +41,7 @@ biblioteca-academica/
 │ ├── templates/
 │ └── static/css/style.css
 └── evidence/ # Aquí van tus capturas de pantalla
-
+```
 
 ## 1. Levantar la base de datos con Podman
 
