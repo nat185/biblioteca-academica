@@ -99,11 +99,11 @@ antes de subir el proyecto a GitHub.
 ## 📸 Evidencia de Ejecución
 
 ### 3.1. Verificación del Contenedor y Consulta Manual
-* **Verificación de servicios activados:**
-  ![Estado de Podman](img/podman_ps.png)
+* **Verificación de servicios activados:**  
+  <img src="evidence/podman  ps.png" alt="Estado de Podman" width="700"/>
 
-* **Consulta manual directa en terminal (`psql`):**
-  ![Consulta manual con psql](img/consulta_manual_con_psq.png)
+* **Consulta manual directa en terminal (`psql`):**  
+  <img src="evidence/consulta manual con psq.png" alt="Consulta manual psql" width="700"/>
 
 ---
 
@@ -111,17 +111,17 @@ antes de subir el proyecto a GitHub.
 
 | Consulta | Descripción / Operación SQL | Captura de Pantalla |
 | :--- | :--- | :--- |
-| **Consulta 1** | Catálogo general de libros (`ORDER BY`) | `![Consulta 1](img/ejecucion_libros.png)` |
-| **Consulta 2** | Filtrado por categoría específica (`JOIN` + `WHERE`) | `![Consulta 2](img/ejecucion_filtro_categoria.png)` |
-| **Consulta 3** | Historial de préstamos y usuarios (`MULTIPLE JOIN`) | `![Consulta 3](img/ejecucion_prestamos_usuarios.png)` |
-| **Consulta 4** | Control de préstamos vencidos y activos | `![Consulta 4](img/ejecucion_prestamos_vencidos.png)` |
-| **Consulta 5** | Conteo total de libros por autor (`GROUP BY`) | `![Consulta 5](img/ejecucion_libros_por_autor.png)` |
-| **Consulta 6** | Préstamos acumulados por categoría | `![Consulta 6](img/ejecucion_prestamos_categoria.png)` |
-| **Consulta 7** | Usuarios frecuentes (`HAVING`) | `![Consulta 7](img/ejecucion_usuarios_frecuentes.png)` |
-| **Consulta 8** | Inventario y ejemplares disponibles | `![Consulta 8](img/ejecucion_ejemplares_disponibles.png)` |
-| **Consulta 9** | Historial por usuario con Subconsulta | `![Consulta 9](img/ejecucion_subconsulta_usuario.png)` |
-| **Consultas 10 y 11** | Libros sin préstamos (`NOT IN`) y Multas pendientes | `![Consultas 10 y 11](img/ejecucion_libros_sin_prestamo_y_multas.png)` |
-| **Consulta 12** | Consolidados de autores y categorías (`UNION`) | `![Consulta 12](img/ejecucion_union_autores_categorias.png)` |
+| **Consulta 1** | Catálogo general de libros (`ORDER BY`) | <img src="evidence/ejecucion_libros.png" width="400"/> |
+| **Consulta 2** | Filtrado por categoría específica (`JOIN` + `WHERE`) | <img src="evidence/ejecucion_filtro_categoria.png" width="400"/> |
+| **Consulta 3** | Historial de préstamos y usuarios (`MULTIPLE JOIN`) | <img src="evidence/ejecucion_prestamos_usuarios.png" width="400"/> |
+| **Consulta 4** | Control de préstamos vencidos y activos | <img src="evidence/ejecucion_prestamos_vencidos.png" width="400"/> |
+| **Consulta 5** | Conteo total de libros por autor (`GROUP BY`) | <img src="evidence/ejecucion_libros_por_autor.png" width="400"/> |
+| **Consulta 6** | Préstamos acumulados por categoría | <img src="evidence/ejecucion_prestamos_categoria.png" width="400"/> |
+| **Consulta 7** | Usuarios frecuentes (`HAVING`) | <img src="evidence/ejecucion_usuarios_frecuentes.png" width="400"/> |
+| **Consulta 8** | Inventario y ejemplares disponibles | <img src="evidence/ejecucion_ejemplares_disponibles.png" width="400"/> |
+| **Consulta 9** | Historial por usuario con Subconsulta | <img src="evidence/ejecucion_subconsulta_usuario.png" width="400"/> |
+| **Consultas 10 y 11** | Libros sin préstamos (`NOT IN`) y Multas pendientes | <img src="evidence/ejecucion_libros_sin_prestamo_y_multas.png" width="400"/> |
+| **Consulta 12** | Consolidados de autores y categorías (`UNION`) | <img src="evidence/ejecucion_union_autores_categorias.png" width="400"/> |
 
 ## 4. Modelo de datos
 
