@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Biblioteca Académica{% endblock %}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="shell">
+
+  <aside class="drawer">
+    <div class="drawer-head">
+      <span class="drawer-mark">Bibliotheca</span>
+      <span class="drawer-sub">Sistema académico</span>
+    </div>
+
+    <nav class="drawer-nav">
+      <a href="{{ url_for('dashboard') }}" class="tab {{ 'is-active' if request.endpoint == 'dashboard' }}">
+        <span class="tab-index">00</span> Panel general
+      </a>
+      {% for key, label in nav_tables %}
+      <a href="{{ url_for('list_view', table_name=key) }}"
+         class="tab {{ 'is-active' if request.view_args and request.view_args.get('table_name') == key }}">
+        <span class="tab-index">{{ '%02d'|format(loop.index) }}</span> {{ label }}
+      </a>
+      {% endfor %}
+    </nav>
+
+    <a href="{{ url_for('conexion') }}" class="drawer-status {{ 'ok' if conn_ok else 'down' }}">
+      <span class="dot"></span>
+      {{ "Base de datos conectada" if conn_ok else "Sin conexión" }}
+    </a>
+  </aside>
+
+  <main class="content">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-stack">
+        {% for category, message in messages %}
+          <div class="flash flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+</div>
+</body>
+</html>

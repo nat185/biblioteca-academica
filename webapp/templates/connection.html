@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Conexión · Biblioteca Académica{% endblock %}
+
+{% block content %}
+<header class="page-head">
+  <p class="eyebrow">Acceso</p>
+  <h1>Conexión a la base de datos</h1>
+  <p class="page-lede">Estos son los datos que la aplicación usa para conectarse al contenedor de PostgreSQL levantado con Podman.</p>
+</header>
+
+<section class="card">
+  <div class="conn-status {{ 'ok' if ok else 'down' }}">
+    <span class="dot"></span>
+    <div>
+      <strong>{{ "Conectado correctamente" if ok else "No se pudo conectar" }}</strong>
+      <p class="mono small">{{ info }}</p>
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <h2 class="card-title">Credenciales configuradas (webapp/.env)</h2>
+  <table class="kv-table">
+    <tr><th>Host</th><td class="mono">{{ creds.host }}</td></tr>
+    <tr><th>Puerto</th><td class="mono">{{ creds.port }}</td></tr>
+    <tr><th>Base de datos</th><td class="mono">{{ creds.dbname }}</td></tr>
+    <tr><th>Usuario</th><td class="mono">{{ creds.user }}</td></tr>
+    <tr><th>Contraseña</th><td class="mono">{{ creds.password_hint }} <span class="hint">(oculta — ver archivo .env local)</span></td></tr>
+  </table>
+</section>
+
+<section class="card">
+  <h2 class="card-title">¿Cómo se creó este usuario?</h2>
+  <p>El usuario y la base de datos se crean automáticamente al levantar el contenedor con
+  <code>podman/setup_podman.sh</code>, mediante las variables de entorno
+  <code>POSTGRES_USER</code>, <code>POSTGRES_PASSWORD</code> y <code>POSTGRES_DB</code> de la
+  imagen oficial de PostgreSQL. Ese usuario es dueño de todas las tablas.</p>
+
+  <p>Si prefieres separar el usuario administrador del usuario que usa esta aplicación (buena
+  práctica de seguridad), ejecuta el script <code>sql/05_create_app_role.sql</code>, que crea un
+  rol con permisos limitados solo a lectura/escritura de datos (sin poder borrar tablas ni
+  crear otras bases de datos), y actualiza <code>webapp/.env</code> con esas credenciales.</p>
+
+  <a class="card-link" href="{{ url_for('dashboard') }}">← Volver al panel general</a>
+</section>
+{% endblock %}

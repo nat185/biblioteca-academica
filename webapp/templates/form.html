@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Nuevo' if mode == 'nuevo' else 'Editar' }} {{ meta.label }} · Biblioteca Académica{% endblock %}
+
+{% block content %}
+<header class="page-head">
+  <p class="eyebrow">{{ meta.label }}</p>
+  <h1>{{ 'Nuevo registro' if mode == 'nuevo' else 'Editar registro #' + row[meta.pk]|string }}</h1>
+</header>
+
+<div class="card form-card">
+  <form method="post">
+    {% for col in meta.columns %}
+      {% if col.type != 'readonly' %}
+      <div class="field">
+        <label for="{{ col.name }}">{{ col.label }}{% if col.required %} *{% endif %}</label>
+
+        {% if col.type == 'textarea' %}
+          <textarea id="{{ col.name }}" name="{{ col.name }}" rows="3">{{ row[col.name] if row else '' }}</textarea>
+
+        {% elif col.type == 'select' %}
+          <select id="{{ col.name }}" name="{{ col.name }}" {{ 'required' if col.required }}>
+            <option value="">— selecciona —</option>
+            {% for opt in col.options %}
+            <option value="{{ opt }}" {{ 'selected' if row and row[col.name] == opt }}>{{ opt }}</option>
+            {% endfor %}
+          </select>
+
+        {% elif col.type == 'fk' %}
+          <select id="{{ col.name }}" name="{{ col.name }}" {{ 'required' if col.required }}>
+            <option value="">— selecciona —</option>
+            {% for opt_id, opt_label in fk_options[col.name] %}
+            <option value="{{ opt_id }}" {{ 'selected' if row and row[col.name] == opt_id }}>{{ opt_label }}</option>
+            {% endfor %}
+          </select>
+
+        {% elif col.type == 'checkbox' %}
+          <label class="checkbox-line">
+            <input type="checkbox" id="{{ col.name }}" name="{{ col.name }}" {{ 'checked' if row and row[col.name] }}>
+            Sí
+          </label>
+
+        {% else %}
+          <input
+            type="{{ col.type }}"
+            id="{{ col.name }}"
+            name="{{ col.name }}"
+            {% if col.step %}step="{{ col.step }}"{% endif %}
+            value="{{ row[col.name] if row and row[col.name] is not none else '' }}"
+            {{ 'required' if col.required }}>
+        {% endif %}
+      </div>
+      {% endif %}
+    {% endfor %}
+
+    <div class="form-actions">
+      <a class="btn-ghost" href="{{ url_for('list_view', table_name=table_name) }}">Cancelar</a>
+      <button type="submit" class="btn-primary">{{ 'Crear registro' if mode == 'nuevo' else 'Guardar cambios' }}</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

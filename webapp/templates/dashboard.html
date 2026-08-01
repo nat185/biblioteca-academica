@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}Panel general · Biblioteca Académica{% endblock %}
+
+{% block content %}
+<header class="page-head">
+  <p class="eyebrow">Ficha 00 — resumen</p>
+  <h1>Panel general</h1>
+  <p class="page-lede">Estado en tiempo real de la colección, los usuarios y los préstamos activos.</p>
+</header>
+
+{% if not ok %}
+<div class="card card-warning">
+  <strong>No se pudo conectar a la base de datos.</strong>
+  <p>Verifica que el contenedor de Podman esté corriendo (<code>podman ps</code>) y revisa
+  la <a href="{{ url_for('conexion') }}">página de conexión</a> para más detalle.</p>
+</div>
+{% else %}
+
+<section class="stat-grid">
+  {% for key, label in [('libros','Libros'), ('usuarios','Usuarios'), ('prestamos','Préstamos'), ('multas','Multas')] %}
+  <a href="{{ url_for('list_view', table_name=key) }}" class="stat-card">
+    <span class="stat-number">{{ stats.get(key, 0) }}</span>
+    <span class="stat-label">{{ label }}</span>
+  </a>
+  {% endfor %}
+</section>
+
+<section class="two-col">
+  <div class="card">
+    <h2 class="card-title">Préstamos vencidos</h2>
+    {% if alerts.vencidos %}
+    <table class="mini-table">
+      <thead><tr><th>#</th><th>Usuario</th><th>Debía entregar</th></tr></thead>
+      <tbody>
+        {% for r in alerts.vencidos %}
+        <tr>
+          <td class="mono">#{{ r.id_prestamo }}</td>
+          <td>{{ r.nombre }} {{ r.apellido }}</td>
+          <td><span class="badge badge-vencido">{{ r.fecha_devolucion_esperada }}</span></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p class="empty-note">No hay préstamos vencidos. Buen trabajo.</p>
+    {% endif %}
+    <a class="card-link" href="{{ url_for('list_view', table_name='prestamos') }}">Ver todos los préstamos →</a>
+  </div>
+
+  <div class="card">
+    <h2 class="card-title">Multas pendientes</h2>
+    {% if alerts.multas_pendientes %}
+    <table class="mini-table">
+      <thead><tr><th>#</th><th>Usuario</th><th>Monto</th></tr></thead>
+      <tbody>
+        {% for r in alerts.multas_pendientes %}
+        <tr>
+          <td class="mono">#{{ r.id_multa }}</td>
+          <td>{{ r.nombre }} {{ r.apellido }}</td>
+          <td><span class="badge badge-multa">${{ r.monto }}</span></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p class="empty-note">No hay multas pendientes de pago.</p>
+    {% endif %}
+    <a class="card-link" href="{{ url_for('list_view', table_name='multas') }}">Ver todas las multas →</a>
+  </div>
+</section>
+
+<section class="card">
+  <h2 class="card-title">Todas las tablas</h2>
+  <div class="table-chip-grid">
+    {% for key, meta in tables.items() %}
+    <a href="{{ url_for('list_view', table_name=key) }}" class="table-chip">
+      <span>{{ meta.label }}</span>
+      <span class="mono chip-count">{{ stats.get(key, 0) }}</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+{% endif %}
+{% endblock %}

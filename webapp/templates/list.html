@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}{{ meta.label }} · Biblioteca Académica{% endblock %}
+
+{% block content %}
+<header class="page-head">
+  <p class="eyebrow">Ficha — {{ meta.label }}</p>
+  <h1>{{ meta.label }}</h1>
+  <p class="page-lede">{{ rows|length }} registro{{ 's' if rows|length != 1 else '' }} encontrado{{ 's' if rows|length != 1 else '' }}.</p>
+</header>
+
+<div class="toolbar">
+  {% if meta.search_field %}
+  <form class="search-form" method="get">
+    <input type="text" name="q" placeholder="Buscar por {{ meta.search_field }}…" value="{{ q }}">
+    <button type="submit">Buscar</button>
+    {% if q %}<a class="clear-link" href="{{ url_for('list_view', table_name=table_name) }}">Limpiar</a>{% endif %}
+  </form>
+  {% else %}<span></span>{% endif %}
+  <a class="btn-primary" href="{{ url_for('create_view', table_name=table_name) }}">+ Nuevo registro</a>
+</div>
+
+<div class="card table-card">
+  {% if rows %}
+  <table class="data-table">
+    <thead>
+      <tr>
+        {% for col in meta.columns %}
+        <th>{{ col.label }}</th>
+        {% endfor %}
+        <th class="actions-col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in rows %}
+      <tr>
+        {% for col in meta.columns %}
+        <td class="{{ 'mono' if col.type in ['readonly','number'] else '' }}">
+          {% if col.type == 'fk' %}
+            {{ row[col.name + '_label'] }}
+          {% elif col.type == 'checkbox' %}
+            {% if row[col.name] %}<span class="badge badge-ok">Sí</span>{% else %}<span class="badge badge-muted">No</span>{% endif %}
+          {% elif col.name == 'estado' %}
+            <span class="badge badge-{{ row[col.name] }}">{{ row[col.name] }}</span>
+          {% else %}
+            {{ row[col.name] if row[col.name] is not none else '—' }}
+          {% endif %}
+        </td>
+        {% endfor %}
+        <td class="actions-col">
+          <a class="row-action" href="{{ url_for('edit_view', table_name=table_name, record_id=row[meta.pk]) }}">Editar</a>
+          <form method="post" action="{{ url_for('delete_view', table_name=table_name, record_id=row[meta.pk]) }}"
+                onsubmit="return confirm('¿Eliminar el registro #{{ row[meta.pk] }}? Esta acción no se puede deshacer.');" class="inline-form">
+            <button type="submit" class="row-action row-action-danger">Eliminar</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty-state">
+    <p>No hay registros{{ ' que coincidan con “' + q + '”' if q else '' }} todavía.</p>
+    <a class="btn-primary" href="{{ url_for('create_view', table_name=table_name) }}">Crear el primero</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
