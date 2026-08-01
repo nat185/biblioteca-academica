@@ -40,7 +40,7 @@ biblioteca-academica/
 │ ├── .env.example
 │ ├── templates/
 │ └── static/css/style.css
-└── evidence/ # Aquí van tus capturas de pantalla
+└── evidence/ # Aquí van las capturas de pantalla
 ```
 
 ## 1. Levantar la base de datos con Podman
@@ -233,7 +233,3 @@ git branch -M main
 git remote add origin https://github.com/<tu-usuario>/biblioteca-academica.git
 git push -u origin main
 ```
-
-> Nota: no subas el archivo `.env` (contiene credenciales locales). Ya
-> está listo `.env.example` como plantilla y se recomienda agregar un
-> `.gitignore` con `venv/`, `.env` y `__pycache__/`.
