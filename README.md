@@ -160,7 +160,7 @@ Abre **http://127.0.0.1:5000** en el navegador cuando se este ejecutando flask -
 </p>
 
 <p align="center">
-  <img src="evidence/Interface .gif" alt="Demostración de la interfaz web" width="100%"/>
+  <img src="evidence/Interface.gif" alt="Demostración de la interfaz web" width="100%"/>
 </p>
 
 
