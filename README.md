@@ -159,13 +159,10 @@ Abre **http://127.0.0.1:5000** en el navegador cuando se este ejecutando flask -
   <img src="evidence/Interface ejecucion en python.png" alt="Panel de administración" width="100%">
 </p>
 
-#### Video de demostración
-
-https://github.com/user-attachments/assets/tu-video.mp4
-
 <p align="center">
-  <video src="evidence/Interface .mp4" controls width="100%"></video>
+  <img src="evidence/Interface .gif" alt="Demostración de la interfaz web" width="100%"/>
 </p>
+
 
 **Qué incluye:**
 - **Panel general (`/`)**: conteo de registros por tabla, préstamos
