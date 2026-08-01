@@ -15,26 +15,33 @@ un cliente en Python y el entorno de base de datos levantado con **Podman**.
 
 ## Estructura del repositorio
 
-```
 biblioteca-academica/
 ├── README.md
 ├── docs/
-│   └── diagrama_er.md          # Diagrama entidad-relación (Mermaid)
+│ └── diagrama_er.md # Diagrama entidad-relación (Mermaid)
 ├── sql/
-│   ├── 01_ddl_create_database.sql
-│   ├── 02_dml_insert_data.sql
-│   ├── 03_queries_select.sql
-│   └── 04_dml_update_delete.sql
+│ ├── 01_ddl_create_database.sql
+│ ├── 02_dml_insert_data.sql
+│ ├── 03_queries_select.sql
+│ └── 04_dml_update_delete.sql
 ├── python/
-│   ├── requirements.txt
-│   ├── .env.example
-│   ├── db_connection.py
-│   └── run_scripts.py
+│ ├── requirements.txt
+│ ├── .env.example
+│ ├── db_connection.py
+│ └── run_scripts.py
 ├── podman/
-│   ├── setup_podman.sh         # Levanta el contenedor PostgreSQL
-│   └── load_sql.sh             # Carga los scripts vía psql
-└── evidence/                   # Aquí van tus capturas de pantalla
-```
+│ ├── setup_podman.sh # Levanta el contenedor PostgreSQL
+│ └── load_sql.sh # Carga los scripts vía psql
+├── webapp/ # Panel web (Flask) para explorar y editar la BD
+│ ├── app.py
+│ ├── config.py
+│ ├── db.py
+│ ├── requirements.txt
+│ ├── .env.example
+│ ├── templates/
+│ └── static/css/style.css
+└── evidence/ # Aquí van tus capturas de pantalla
+
 
 ## 1. Levantar la base de datos con Podman
 
@@ -93,6 +100,7 @@ Guarda capturas de pantalla de:
 - La salida de `podman ps` mostrando el contenedor activo. 
 - La salida de `python run_scripts.py --all` con las tablas de resultados.
 - Alguna consulta corrida manualmente con `podman exec -it biblioteca_pg psql ...`
+
 Colócalas dentro de `evidence/` y referencia sus nombres en este README
 antes de subir el proyecto a GitHub.
 
@@ -122,6 +130,59 @@ antes de subir el proyecto a GitHub.
 | **Consulta 9** | Historial por usuario con Subconsulta | <img src="evidence/ejecucion_subconsulta_usuario.png" width="400"/> |
 | **Consultas 10 y 11** | Libros sin préstamos (`NOT IN`) y Multas pendientes | <img src="evidence/ejecucion_libros_sin_prestamo_y_multas.png" width="400"/> |
 | **Consulta 12** | Consolidados de autores y categorías (`UNION`) | <img src="evidence/ejecucion_union_autores_categorias.png" width="400"/> |
+
+### 3.3. Interfaz web (panel de administración)
+
+Además de los scripts SQL, el repositorio incluye una interfaz web
+(Flask) para explorar, buscar, crear, editar y eliminar registros de
+las 8 tablas sin escribir SQL a mano, con un panel de estadísticas y
+una pantalla que muestra el estado de conexión y las credenciales
+usadas.
+
+**Levantarla (con el contenedor de Podman ya corriendo):**
+```bash
+cd webapp
+python -m venv venv
+source venv/Scripts/activate      # Git Bash en Windows
+pip install -r requirements.txt
+
+cp .env.example .env              # ajusta si usaste otras credenciales
+
+flask --app app run --debug
+```
+
+Abre **http://127.0.0.1:5000** en el navegador.
+
+**Qué incluye:**
+- **Panel general (`/`)**: conteo de registros por tabla, préstamos
+  vencidos y multas pendientes de un vistazo.
+- **Listado + búsqueda (`/<tabla>`)**: tabla con búsqueda por el campo
+  principal de cada entidad (título, nombre, apellido).
+- **Alta y edición (`/<tabla>/nuevo`, `/<tabla>/<id>/editar`)**:
+  formularios generados automáticamente a partir de `config.py`,
+  incluyendo listas desplegables para las llaves foráneas (por
+  ejemplo, al crear un libro eliges el autor y la categoría por nombre,
+  no por ID).
+- **Eliminar**: con confirmación; si el registro está referenciado en
+  otra tabla, la base de datos rechaza el borrado y la app muestra el
+  motivo.
+- **Conexión (`/conexion`)**: host, puerto, base de datos y usuario
+  configurados (la contraseña se muestra oculta), estado de la
+  conexión en vivo, y cómo se creó ese usuario.
+
+**Usuario de la base de datos: ¿qué debes tener creado?**
+1. **Usuario administrador** (`biblioteca_user`, definido por
+   `POSTGRES_USER` en `podman/setup_podman.sh`): dueño de todas las
+   tablas. Es el que usa la webapp por defecto vía `webapp/.env`.
+2. **(Opcional, recomendado) Usuario de aplicación con permisos
+   limitados**: corre `sql/05_create_app_role.sql` para crear el rol
+   `biblioteca_app`, que solo puede leer/escribir filas (no puede
+   borrar tablas ni crear otras bases de datos). Luego actualiza
+   `webapp/.env` con `DB_USER=biblioteca_app` y la contraseña que
+   hayas definido en ese script.
+
+Ninguna contraseña se sube al repositorio: `.env` está en
+`.gitignore`, y solo se versiona `.env.example` como plantilla.
 
 ## 4. Modelo de datos
 
