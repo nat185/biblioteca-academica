@@ -90,12 +90,38 @@ python run_scripts.py --queries
 ## 3. Evidencia de ejecución
 
 Guarda capturas de pantalla de:
-- La salida de `podman ps` mostrando el contenedor activo.
+- La salida de `podman ps` mostrando el contenedor activo. 
 - La salida de `python run_scripts.py --all` con las tablas de resultados.
 - Alguna consulta corrida manualmente con `podman exec -it biblioteca_pg psql ...`
-
 Colócalas dentro de `evidence/` y referencia sus nombres en este README
 antes de subir el proyecto a GitHub.
+
+## 📸 Evidencia de Ejecución
+
+### 3.1. Verificación del Contenedor y Consulta Manual
+* **Verificación de servicios activados:**
+  ![Estado de Podman](img/podman_ps.png)
+
+* **Consulta manual directa en terminal (`psql`):**
+  ![Consulta manual con psql](img/consulta_manual_con_psq.png)
+
+---
+
+### 3.2. Ejecución Automatizada de Consultas (Script Python)
+
+| Consulta | Descripción / Operación SQL | Captura de Pantalla |
+| :--- | :--- | :--- |
+| **Consulta 1** | Catálogo general de libros (`ORDER BY`) | `![Consulta 1](img/ejecucion_libros.png)` |
+| **Consulta 2** | Filtrado por categoría específica (`JOIN` + `WHERE`) | `![Consulta 2](img/ejecucion_filtro_categoria.png)` |
+| **Consulta 3** | Historial de préstamos y usuarios (`MULTIPLE JOIN`) | `![Consulta 3](img/ejecucion_prestamos_usuarios.png)` |
+| **Consulta 4** | Control de préstamos vencidos y activos | `![Consulta 4](img/ejecucion_prestamos_vencidos.png)` |
+| **Consulta 5** | Conteo total de libros por autor (`GROUP BY`) | `![Consulta 5](img/ejecucion_libros_por_autor.png)` |
+| **Consulta 6** | Préstamos acumulados por categoría | `![Consulta 6](img/ejecucion_prestamos_categoria.png)` |
+| **Consulta 7** | Usuarios frecuentes (`HAVING`) | `![Consulta 7](img/ejecucion_usuarios_frecuentes.png)` |
+| **Consulta 8** | Inventario y ejemplares disponibles | `![Consulta 8](img/ejecucion_ejemplares_disponibles.png)` |
+| **Consulta 9** | Historial por usuario con Subconsulta | `![Consulta 9](img/ejecucion_subconsulta_usuario.png)` |
+| **Consultas 10 y 11** | Libros sin préstamos (`NOT IN`) y Multas pendientes | `![Consultas 10 y 11](img/ejecucion_libros_sin_prestamo_y_multas.png)` |
+| **Consulta 12** | Consolidados de autores y categorías (`UNION`) | `![Consulta 12](img/ejecucion_union_autores_categorias.png)` |
 
 ## 4. Modelo de datos
 
